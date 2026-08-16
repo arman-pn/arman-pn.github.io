@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arman Payan · Backend Developer</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b101e;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            color: #e6edf8;
+            line-height: 1.5;
+        }
+
+        .card {
+            max-width: 1200px;
+            width: 100%;
+            background: radial-gradient(circle at 10% 20%, #111d33, #0a111f);
+            border-radius: 3rem;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 30px 60px rgba(0, 10, 30, 0.9), 0 0 0 1px rgba(60, 150, 255, 0.2);
+            border: 1px solid rgba(70, 160, 255, 0.15);
+            backdrop-filter: blur(2px);
+            transition: 0.2s;
+        }
+
+        /* ----- header ----- */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(50, 140, 255, 0.25);
+            padding-bottom: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .name-title h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #8ec2ff, #3d8eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .name-title .badge {
+            display: inline-block;
+            background: rgba(30, 90, 200, 0.2);
+            border: 1px solid #3a8aff;
+            color: #b0d0ff;
+            padding: 0.3rem 1.6rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+            margin-top: 0.4rem;
+        }
+
+        .contact-icons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-icons a {
+            color: #b8d2ff;
+            background: rgba(30, 70, 160, 0.2);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(60, 150, 255, 0.25);
+            transition: 0.25s;
+            font-size: 1.3rem;
+            text-decoration: none;
+        }
+
+        .contact-icons a:hover {
+            background: #2565d0;
+            color: #fff;
+            border-color: #5a9eff;
+            transform: scale(1.06);
+            box-shadow: 0 0 25px #1a5fbf;
+        }
+
+        .honor-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .honor-badge {
+            background: linear-gradient(145deg, #172b4a, #0f1f3a);
+            border: 1px solid #f5b342;
+            color: #ffdd8a;
+            border-radius: 40px;
+            padding: 0.3rem 1.6rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 0 18px rgba(255, 200, 50, 0.08);
+        }
+
+        .honor-badge.blue {
+            border-color: #4a8eff;
+            color: #b8d6ff;
+        }
+
+        /* ----- grid ----- */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2.2fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 850px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.2rem;
+            }
+            .card {
+                padding: 1.8rem;
+            }
+        }
+
+        /* ----- sidebar ----- */
+        .sidebar {
+            background: rgba(12, 24, 48, 0.5);
+            backdrop-filter: blur(6px);
+            border-radius: 2rem;
+            padding: 1.8rem 1.6rem;
+            border: 1px solid rgba(50, 130, 255, 0.15);
+            box-shadow: inset 0 0 30px rgba(0, 30, 80, 0.2);
+        }
+
+        .side-section {
+            margin-bottom: 2.2rem;
+        }
+
+        .side-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6a9eff;
+            letter-spacing: 0.5px;
+            border-right: 4px solid #3a8cff;
+            padding-right: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 0.95rem;
+            color: #c6dcff;
+        }
+
+        .info-item i {
+            width: 24px;
+            color: #5a9eff;
+            font-size: 1rem;
+        }
+
+        .lang-tag {
+            background: #1a2d50;
+            border: 1px solid #3a7acc;
+            border-radius: 30px;
+            padding: 0.25rem 1.4rem;
+            color: #c6ddff;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin: 0.2rem 0.1rem;
+        }
+
+        .skill-tag {
+            background: rgba(25, 60, 140, 0.25);
+            border: 1px solid #2a5faa;
+            border-radius: 30px;
+            padding: 0.2rem 1.1rem;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #c8deff;
+            display: inline-block;
+            margin: 0.2rem 0.1rem;
+            backdrop-filter: blur(2px);
+            transition: 0.1s;
+        }
+
+        .skill-tag.high {
+            border-color: #4a8eff;
+            background: rgba(40, 100, 220, 0.25);
+            color: #d8eaff;
+        }
+
+        .skill-tag.mid {
+            border-color: #3a7acc;
+            opacity: 0.9;
+        }
+
+        /* ----- main sections ----- */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .section {
+            background: rgba(14, 26, 48, 0.45);
+            backdrop-filter: blur(4px);
+            padding: 1.6rem 1.8rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(50, 130, 255, 0.12);
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #7eb2ff;
+            border-bottom: 2px solid rgba(60, 140, 255, 0.2);
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section h2 i {
+            color: #3a8cff;
+        }
+
+        .job-item {
+            margin-bottom: 1.4rem;
+        }
+
+        .job-item .title {
+            font-weight: 600;
+            color: #d0e4ff;
+            font-size: 1.05rem;
+        }
+
+        .job-item .company {
+            color: #7aa9ff;
+            font-weight: 500;
+        }
+
+        .job-item .date {
+            font-size: 0.8rem;
+            color: #7a9acf;
+            margin-right: 0.8rem;
+        }
+
+        .job-item p {
+            color: #b8cef0;
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(60, 140, 255, 0.08);
+            padding: 0.5rem 0;
+        }
+
+        .edu-item:last-child {
+            border: none;
+        }
+
+        .edu-item .major {
+            font-weight: 500;
+            color: #d6e6ff;
+        }
+
+        .edu-item .uni {
+            color: #7aa9ff;
+        }
+
+        .edu-item .year {
+            color: #6a8fc0;
+            font-size: 0.85rem;
+        }
+
+        .project-tag {
+            background: #162442;
+            border-radius: 30px;
+            padding: 0.25rem 1.2rem;
+            border: 1px solid #2a5faa;
+            font-size: 0.8rem;
+            color: #b8d2ff;
+            display: inline-block;
+            margin: 0.25rem 0.2rem;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: #3f6a9f;
+            font-size: 0.8rem;
+            border-top: 1px solid #1a2a4a;
+            padding-top: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-note i {
+            color: #3a8cff;
+        }
+
+        /* scroll */
+        ::-webkit-scrollbar { width: 6px; background: #0a101f; }
+        ::-webkit-scrollbar-thumb { background: #2a5faa; border-radius: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="name-title">
+            <h1>Arman Payan</h1>
+            <div class="badge">
+                <i class="fas fa-code" style="margin-left: 6px;"></i> Backend · Odoo · Django · Java
+            </div>
+            <div class="honor-strip">
+                <span class="honor-badge"><i class="fas fa-star" style="margin-left: 6px;"></i> National Elite Foundation</span>
+                <span class="honor-badge blue"><i class="fas fa-trophy"></i> Top 3 University</span>
+                <span class="honor-badge blue" style="border-color: #4a8eff;"><i class="fas fa-file-alt"></i> Security in NoSQL</span>
+            </div>
+        </div>
+        <div class="contact-icons">
+            <a href="mailto:armaneheme@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="tel:091304698216" title="Phone"><i class="fas fa-phone-alt"></i></a>
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="side-section">
+                <h3><i class="fas fa-user-circle"></i> Personal</h3>
+                <div class="info-item"><i class="fas fa-calendar-alt"></i> 2004 · 22 years</div>
+                <div class="info-item"><i class="fas fa-map-marker-alt"></i> Shiraz, Fars · Iran</div>
+                <div class="info-item"><i class="fas fa-user-graduate"></i> Military exemption (student)</div>
+                <div class="info-item"><i class="fas fa-heart"></i> Single</div>
+                <div class="info-item"><i class="fas fa-briefcase"></i> 3+ years experience</div>
+                <div class="info-item"><i class="fas fa-dollar-sign"></i> 60–80 million IRR</div>
+            </div>
+
+            <div class="side-section">
+                <h3><i class="fas fa-globe"></i> Languages</h3>
+                <span class="lang-tag"><i class="fas fa-check-circle" style="color: #4a8eff;"></i> English (Professional)</span>
+                <span class="lang-tag">Persian (Native)</span>
+            </div>
+
+            <div class="side-section">
+                <h3><i class="fas fa-cogs"></i> Core Skills</h3>
+                <div>
+                    <span class="skill-tag high">Python</span>
+                    <span class="skill-tag high">Django</span>
+                    <span class="skill-tag high">Odoo ERP</span>
+                    <span class="skill-tag high">Java</span>
+                    <span class="skill-tag high">PHP</span>
+                    <span class="skill-tag high">C</span>
+                    <span class="skill-tag high">REST API</span>
+                    <span class="skill-tag high">PostgreSQL</span>
+                    <span class="skill-tag high">MySQL</span>
+                    <span class="skill-tag high">Git</span>
+                    <span class="skill-tag high">Docker</span>
+                    <span class="skill-tag high">DRF</span>
+                    <span class="skill-tag high">HTML5 & CSS3</span>
+                    <span class="skill-tag mid">JavaScript</span>
+                    <span class="skill-tag mid">Laravel</span>
+                    <span class="skill-tag mid">Android (Kotlin)</span>
+                    <span class="skill-tag mid">Photoshop</span>
+                    <span class="skill-tag mid">ICDL</span>
+                    <span class="skill-tag mid">DirectAdmin</span>
+                    <span class="skill-tag mid">MATLAB</span>
+                    <span class="skill-tag mid">Oracle DB</span>
+                    <span class="skill-tag">Eclipse</span>
+                    <span class="skill-tag">Unit Testing</span>
+                    <span class="skill-tag">OpenCV</span>
+                    <span class="skill-tag">VHDL</span>
+                    <span class="skill-tag">Latex</span>
+                    <span class="skill-tag">JQuery</span>
+                    <span class="skill-tag">Proteus</span>
+                    <span class="skill-tag">SQL/DS</span>
+                    <span class="skill-tag">GitLab</span>
+                    <span class="skill-tag">Microsoft Test Manager</span>
+                    <span class="skill-tag">Microsoft Outlook</span>
+                    <span class="skill-tag">Adobe Premiere</span>
+                    <span class="skill-tag">Figma (basic)</span>
+                    <span class="skill-tag">Cassandra (basic)</span>
+                    <span class="skill-tag">MongoDB (basic)</span>
+                    <span class="skill-tag">ASP.Net (basic)</span>
+                    <span class="skill-tag">Swift (basic)</span>
+                    <span class="skill-tag">Assembly (basic)</span>
+                </div>
+            </div>
+
+            <div class="side-section">
+                <h3><i class="fas fa-award"></i> Achievements</h3>
+                <div class="honor-badge" style="border-color: #ffb347; color: #ffcd7a; display: inline-block; margin-bottom: 0.5rem;"><i class="fas fa-medal"></i> National Elite Foundation</div>
+                <div class="honor-badge blue" style="border-color: #4a8eff; display: inline-block; margin-bottom: 0.3rem;"><i class="fas fa-newspaper"></i> Paper: "Security in NoSQL"</div>
+                <div class="honor-badge blue" style="border-color: #4a8eff; display: inline-block;"><i class="fas fa-university"></i> Top 3 · Computer Engineering</div>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main-content">
+
+            <!-- about -->
+            <div class="section">
+                <h2><i class="fas fa-address-card"></i> About</h2>
+                <p style="line-height: 1.8; color: #c6d9ff;">
+                    Computer Engineering student at <strong style="color: #7abfff;">Persian Gulf University</strong> (ongoing). 
+                    ICDL certified, high typing speed, with hands-on experience in backend development, virtual networks, and system administration. 
+                    Passionate about building scalable APIs, ERP systems (Odoo), and secure database architectures. 
+                    Member of the <strong style="color: #ffd966;">National Elite Foundation</strong> and author of a paper on NoSQL security. 
+                    Experienced in collaborative environments, start-ups, and academic research.
+                </p>
+            </div>
+
+            <!-- work experience -->
+            <div class="section">
+                <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+                <div class="job-item">
+                    <div class="title">Odoo Developer / Full-Stack <span class="company">Roshaye Amin</span> <span class="date">Oct 2024 – Present</span></div>
+                    <p>Developing custom Odoo modules, integrating REST APIs, optimizing PostgreSQL performance, and implementing business workflows.</p>
+                </div>
+                <div class="job-item">
+                    <div class="title">Mobile Developer <span class="company">Vink</span> <span class="date">Oct 2025 – Mar 2026</span></div>
+                    <p>Mobile app development (Android/Kotlin) and front-end integration, team collaboration on product features.</p>
+                </div>
+                <div class="job-item">
+                    <div class="title">Backend Developer <span class="company">Mobile & Tech Development</span> <span class="date">Oct 2023 – Present</span></div>
+                    <p>Design and implementation of backend services using Django, Django REST Framework, JWT authentication, and database management (PostgreSQL, MySQL).</p>
+                </div>
+                <div class="job-item">
+                    <div class="title">Team Member <span class="company">Teamv</span> <span class="date">Feb 2022 – Jul 2023</span></div>
+                    <p>Collaborated on a team project; left due to team inactivity.</p>
+                </div>
+            </div>
+
+            <!-- education -->
+            <div class="section">
+                <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+                <div class="edu-item">
+                    <span class="major">B.Sc. Computer Engineering</span>
+                    <span class="uni">Persian Gulf University</span>
+                    <span class="year">2023 – Present</span>
+                </div>
+                <div class="edu-item">
+                    <span class="major">High School Diploma (Mathematics)</span>
+                    <span class="uni">Khorsandiya</span>
+                    <span class="year">2020 – 2023</span>
+                </div>
+            </div>
+
+            <!-- projects & publications -->
+            <div class="section">
+                <h2><i class="fas fa-flask"></i> Projects & Publications</h2>
+                <div>
+                    <span class="project-tag"><i class="fas fa-cube"></i> Odoo ERP customization</span>
+                    <span class="project-tag"><i class="fas fa-shield-alt"></i> Security in NoSQL (paper)</span>
+                    <span class="project-tag"><i class="fas fa-mobile-alt"></i> Vink mobile app</span>
+                    <span class="project-tag"><i class="fas fa-cloud"></i> Django REST API boilerplate</span>
+                    <span class="project-tag"><i class="fas fa-robot"></i> Collaboration with Sharif University</span>
+                    <span class="project-tag"><i class="fas fa-trophy"></i> Top 3 university rank</span>
+                    <span class="project-tag"><i class="fas fa-palette"></i> Figma UI/UX (basic)</span>
+                    <span class="project-tag"><i class="fas fa-database"></i> PostgreSQL performance tuning</span>
+                </div>
+                <div style="margin-top: 1.2rem; color: #8fb0e0; font-size: 0.9rem;">
+                    <i class="fas fa-check-circle" style="color: #3a8cff;"></i> Published paper: "Security in NoSQL Databases" · 
+                    <i class="fas fa-code"></i> OCR Persian · 
+                    <i class="fas fa-users"></i> Team player & startup enthusiast
+                </div>
+            </div>
+
+        </div> <!-- end main-content -->
+    </div> <!-- end grid -->
+
+    <div class="footer-note">
+        <i class="fas fa-sync-alt" style="margin-left: 6px;"></i> Updated: August 2026 · 
+        <i class="fas fa-map-pin"></i> Shiraz, Iran · 
+        <i class="fas fa-code"></i> Arman Payan
+    </div>
+
+</div> <!-- end card -->
+
+</body>
+</html>
