@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arman Payan · Backend Developer</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- فونت بی‌نازنین برای فارسی -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b101e;
+            font-family: 'Segoe UI', 'Vazirmatn', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            color: #e6edf8;
+            line-height: 1.6;
+            /* ===== افکت شیشه‌ای (Glassmorphism) در کل صفحه ===== */
+            background: radial-gradient(circle at 20% 30%, #1a2f4a, #070d17);
+            backdrop-filter: blur(2px);
+            position: relative;
+        }
+
+        /* ایجاد لایه شیشه‌ای روی کل صفحه */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 20, 40, 0.3);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            z-index: -1;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(18, 30, 55, 0.35);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 3rem;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(80, 170, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: 0.3s;
+        }
+
+        /* ===== دکمه تغییر زبان ===== */
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+        .lang-switch button {
+            background: rgba(60, 140, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(80, 170, 255, 0.25);
+            color: #c0d8ff;
+            padding: 0.5rem 2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(0, 30, 80, 0.2);
+        }
+        .lang-switch button:hover {
+            background: #2565d0;
+            color: #fff;
+            border-color: #5a9eff;
+            box-shadow: 0 0 30px rgba(50, 130, 255, 0.3);
+            transform: scale(1.02);
+        }
+        .lang-switch button i {
+            margin-left: 6px;
+        }
+
+        /* ===== بقیه استایل‌ها با افکت شیشه‌ای جزئی ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(80, 170, 255, 0.15);
+            padding-bottom: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .name-title h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #a8d0ff, #4a8eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .name-title .badge {
+            display: inline-block;
+            background: rgba(40, 100, 220, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(80, 170, 255, 0.2);
+            color: #b8d6ff;
+            padding: 0.3rem 1.6rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 0.4rem;
+        }
+
+        .contact-icons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-icons a {
+            color: #b8d2ff;
+            background: rgba(30, 70, 160, 0.15);
+            backdrop-filter: blur(8px);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(80, 170, 255, 0.15);
+            transition: 0.25s;
+            font-size: 1.3rem;
+            text-decoration: none;
+        }
+
+        .contact-icons a:hover {
+            background: #2565d0;
+            color: #fff;
+            border-color: #5a9eff;
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 80, 200, 0.3);
+        }
+
+        .honor-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .honor-badge {
+            background: rgba(20, 40, 80, 0.25);
+            backdrop-filter: blur(8px);
+            border: 1px solid #f5b342;
+            color: #ffdd8a;
+            border-radius: 40px;
+            padding: 0.3rem 1.6rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(255, 200, 50, 0.05);
+        }
+
+        .honor-badge.blue {
+            border-color: #4a8eff;
+            color: #b8d6ff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2.2fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 850px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.2rem;
+            }
+            .card {
+                padding: 1.8rem;
+            }
+            .lang-switch {
+                text-align: center;
+            }
+        }
+
+        .sidebar {
+            background: rgba(12, 24, 48, 0.25);
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            border-radius: 2rem;
+            padding: 1.8rem 1.6rem;
+            border: 1px solid rgba(80, 170, 255, 0.08);
+            box-shadow: inset 0 0 40px rgba(0, 30, 80, 0.1);
+        }
+
+        .side-section {
+            margin-bottom: 2.2rem;
+        }
+
+        .side-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #7aaeff;
+            letter-spacing: 0.5px;
+            border-right: 4px solid #3a8cff;
+            padding-right: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 0.95rem;
+            color: #c6dcff;
+        }
+
+        .info-item i {
+            width: 24px;
+            color: #5a9eff;
+            font-size: 1rem;
+        }
+
+        .lang-tag {
+            background: rgba(20, 45, 90, 0.25);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(60, 140, 255, 0.2);
+            border-radius: 30px;
+            padding: 0.25rem 1.4rem;
+            color: #c6ddff;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin: 0.2rem 0.1rem;
+        }
+
+        .skill-tag {
+            background: rgba(25, 60, 140, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(60, 140, 255, 0.15);
+            border-radius: 30px;
+            padding: 0.2rem 1.1rem;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #c8deff;
+            display: inline-block;
+            margin: 0.2rem 0.1rem;
+        }
+
+        .skill-tag.high {
+            border-color: #4a8eff;
+            background: rgba(40, 100, 220, 0.2);
+            color: #d8eaff;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .section {
+            background: rgba(14, 26, 48, 0.2);
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            padding: 1.6rem 1.8rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(80, 170, 255, 0.06);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #7eb2ff;
+            border-bottom: 2px solid rgba(60, 140, 255, 0.1);
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section h2 i {
+            color: #3a8cff;
+        }
+
+        .job-item {
+            margin-bottom: 1.4rem;
+        }
+
+        .job-item .title {
+            font-weight: 600;
+            color: #d0e4ff;
+            font-size: 1.05rem;
+        }
+
+        .job-item .company {
+            color: #7aa9ff;
+            font-weight: 500;
+        }
+
+        .job-item .date {
+            font-size: 0.8rem;
+            color: #7a9acf;
+            margin-right: 0.8rem;
+        }
+
+        .job-item p {
+            color: #b8cef0;
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(60, 140, 255, 0.05);
+            padding: 0.5rem 0;
+        }
+
+        .edu-item:last-child {
+            border: none;
+        }
+
+        .edu-item .major {
+            font-weight: 500;
+            color: #d6e6ff;
+        }
+
+        .edu-item .uni {
+            color: #7aa9ff;
+        }
+
+        .edu-item .year {
+            color: #6a8fc0;
+            font-size: 0.85rem;
+        }
+
+        .project-tag {
+            background: rgba(20, 40, 80, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            padding: 0.25rem 1.2rem;
+            border: 1px solid rgba(60, 140, 255, 0.1);
+            font-size: 0.8rem;
+            color: #b8d2ff;
+            display: inline-block;
+            margin: 0.25rem 0.2rem;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: #4a7aaa;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(80, 170, 255, 0.08);
+            padding-top: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-note i {
+            color: #3a8cff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #0a101f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a5faa;
+            border-radius: 20px;
+        }
+
+        /* ===== تنظیم فونت برای فارسی ===== */
+        [lang="fa"] {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        [lang="en"] {
+            font-family: 'Segoe UI', 'Vazirmatn', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <!-- ===== دکمه تغییر زبان ===== -->
+        <div class="lang-switch">
+            <button id="langToggle"><i class="fas fa-globe"></i> فارسی</button>
+        </div>
+
+        <!-- ===== هدر ===== -->
+        <div class="header">
+            <div class="name-title">
+                <h1 id="name">Arman Payan</h1>
+                <img src="linkdin.png" alt="Arman Payan" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3a8aff; box-shadow: 0 0 20px rgba(58, 138, 255, 0.3);">
+                <div class="badge" id="badge">
+                    <i class="fas fa-code" style="margin-left: 6px;"></i> Backend · Odoo · Django · Java
+                </div>
+                <div class="honor-strip">
+                    <span class="honor-badge" id="honor1"><i class="fas fa-star" style="margin-left: 6px;"></i> National Elite Foundation</span>
+                    <span class="honor-badge blue" id="honor2"><i class="fas fa-trophy"></i> Top 3 University</span>
+                    <span class="honor-badge blue" style="border-color: #4a8eff;" id="honor3"><i class="fas fa-file-alt"></i> Security in NoSQL Paper</span>
+                </div>
+            </div>
+            <div class="contact-icons">
+                <a href="mailto:armaneheme@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="https://github.com/arman-pn" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="tel:091304698216" title="Phone"><i class="fas fa-phone-alt"></i></a>
+            </div>
+        </div>
+
+        <!-- ===== محتوای اصلی ===== -->
+        <div class="grid">
+
+            <!-- نوار کناری -->
+            <div class="sidebar">
+                <div class="side-section">
+                    <h3 id="side-title1"><i class="fas fa-user-circle"></i> Personal Info</h3>
+                    <div class="info-item" id="personal1"><i class="fas fa-calendar-alt"></i> 2004 · 22 years</div>
+                    <div class="info-item" id="personal2"><i class="fas fa-map-marker-alt"></i> Shiraz, Fars · Iran</div>
+                    <div class="info-item" id="personal3"><i class="fas fa-user-graduate"></i> Military exemption</div>
+                    <div class="info-item" id="personal4"><i class="fas fa-heart"></i> Single</div>
+                    <div class="info-item" id="personal5"><i class="fas fa-briefcase"></i> 3+ years experience</div>
+                    <div class="info-item" id="personal6"><i class="fas fa-dollar-sign"></i> 60–80 million IRR</div>
+                </div>
+
+                <div class="side-section">
+                    <h3 id="side-title2"><i class="fas fa-globe"></i> Languages</h3>
+                    <span class="lang-tag" id="lang1"><i class="fas fa-check-circle" style="color: #4a8eff;"></i> English (Professional)</span>
+                    <span class="lang-tag" id="lang2">Persian (Native)</span>
+                </div>
+
+                <div class="side-section">
+                    <h3 id="side-title3"><i class="fas fa-cogs"></i> Core Skills</h3>
+                    <div id="skills">
+                        <span class="skill-tag high">Python</span>
+                        <span class="skill-tag high">Django</span>
+                        <span class="skill-tag high">Odoo ERP</span>
+                        <span class="skill-tag high">Java</span>
+                        <span class="skill-tag high">PHP</span>
+                        <span class="skill-tag high">C</span>
+                        <span class="skill-tag high">REST API</span>
+                        <span class="skill-tag high">PostgreSQL</span>
+                        <span class="skill-tag high">MySQL</span>
+                        <span class="skill-tag high">Git</span>
+                        <span class="skill-tag high">Docker</span>
+                        <span class="skill-tag high">DRF</span>
+                        <span class="skill-tag high">HTML5 & CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Laravel</span>
+                        <span class="skill-tag">Android (Kotlin)</span>
+                        <span class="skill-tag">Photoshop</span>
+                        <span class="skill-tag">ICDL</span>
+                        <span class="skill-tag">DirectAdmin</span>
+                        <span class="skill-tag">MATLAB</span>
+                        <span class="skill-tag">Oracle</span>
+                        <span class="skill-tag">OpenCV</span>
+                        <span class="skill-tag">VHDL</span>
+                        <span class="skill-tag">Latex</span>
+                        <span class="skill-tag">JQuery</span>
+                        <span class="skill-tag">Proteus</span>
+                        <span class="skill-tag">SQL/DS</span>
+                        <span class="skill-tag">GitLab</span>
+                        <span class="skill-tag">Figma (basic)</span>
+                        <span class="skill-tag">Cassandra (basic)</span>
+                        <span class="skill-tag">MongoDB (basic)</span>
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <h3 id="side-title4"><i class="fas fa-award"></i> Achievements</h3>
+                    <div class="honor-badge" style="border-color: #ffb347; color: #ffcd7a; display: inline-block; margin-bottom: 0.5rem;" id="achieve1"><i class="fas fa-medal"></i> National Elite Foundation</div>
+                    <div class="honor-badge blue" style="border-color: #4a8eff; display: inline-block; margin-bottom: 0.3rem;" id="achieve2"><i class="fas fa-newspaper"></i> Paper: "Security in NoSQL"</div>
+                    <div class="honor-badge blue" style="border-color: #4a8eff; display: inline-block;" id="achieve3"><i class="fas fa-university"></i> Top 3 · Computer Engineering</div>
+                </div>
+            </div>
+
+            <!-- بخش اصلی -->
+            <div class="main-content">
+
+                <!-- درباره من -->
+                <div class="section">
+                    <h2 id="about-title"><i class="fas fa-address-card"></i> About Me</h2>
+                    <p style="line-height: 1.8; color: #c6d9ff;" id="about-text">
+                        Computer Engineering student at <strong style="color: #7abfff;">Persian Gulf University</strong> (ongoing). 
+                        ICDL certified, high typing speed, with hands-on experience in backend development, virtual networks, and system administration. 
+                        Passionate about building scalable APIs, ERP systems (Odoo), and secure database architectures. 
+                        Member of the <strong style="color: #ffd966;">National Elite Foundation</strong> and author of a paper on NoSQL security. 
+                        Experienced in collaborative environments, start-ups, and academic research.
+                    </p>
+                </div>
+
+                <!-- سوابق شغلی -->
+                <div class="section">
+                    <h2 id="work-title"><i class="fas fa-briefcase"></i> Work Experience</h2>
+                    <div class="job-item">
+                        <div class="title" id="job1-title">Odoo Developer / Full-Stack <span class="company" id="job1-company">Roshaye Amin</span> <span class="date" id="job1-date">Oct 2024 – Present</span></div>
+                        <p id="job1-desc">Developing custom Odoo modules, integrating REST APIs, optimizing PostgreSQL performance, and implementing business workflows.</p>
+                    </div>
+                    <div class="job-item">
+                        <div class="title" id="job2-title">Mobile Developer <span class="company" id="job2-company">Vink</span> <span class="date" id="job2-date">Oct 2025 – Mar 2026</span></div>
+                        <p id="job2-desc">Mobile app development (Android/Kotlin) and front-end integration, team collaboration on product features.</p>
+                    </div>
+                    <div class="job-item">
+                        <div class="title" id="job3-title">Backend Developer <span class="company" id="job3-company">Mobile & Tech Development</span> <span class="date" id="job3-date">Oct 2023 – Present</span></div>
+                        <p id="job3-desc">Design and implementation of backend services using Django, Django REST Framework, JWT authentication, and database management (PostgreSQL, MySQL).</p>
+                    </div>
+                    <div class="job-item">
+                        <div class="title" id="job4-title">Team Member <span class="company" id="job4-company">Teamv</span> <span class="date" id="job4-date">Feb 2022 – Jul 2023</span></div>
+                        <p id="job4-desc">Collaborated on a team project; left due to team inactivity.</p>
+                    </div>
+                </div>
+
+                <!-- تحصیلات -->
+                <div class="section">
+                    <h2 id="edu-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+                    <div class="edu-item">
+                        <span class="major" id="edu1-major">B.Sc. Computer Engineering</span>
+                        <span class="uni" id="edu1-uni">Persian Gulf University</span>
+                        <span class="year" id="edu1-year">2023 – Present</span>
+                    </div>
+                    <div class="edu-item">
+                        <span class="major" id="edu2-major">High School Diploma (Mathematics)</span>
+                        <span class="uni" id="edu2-uni">Khorsandiya</span>
+                        <span class="year" id="edu2-year">2020 – 2023</span>
+                    </div>
+                </div>
+
+                <!-- پروژه‌ها و دستاوردها -->
+                <div class="section">
+                    <h2 id="project-title"><i class="fas fa-flask"></i> Projects & Publications</h2>
+                    <div id="project-tags">
+                        <span class="project-tag"><i class="fas fa-cube"></i> Odoo ERP customization</span>
+                        <span class="project-tag"><i class="fas fa-shield-alt"></i> Security in NoSQL (paper)</span>
+                        <span class="project-tag"><i class="fas fa-mobile-alt"></i> Vink mobile app</span>
+                        <span class="project-tag"><i class="fas fa-cloud"></i> Django REST API boilerplate</span>
+                        <span class="project-tag"><i class="fas fa-robot"></i> Collaboration with Sharif University</span>
+                        <span class="project-tag"><i class="fas fa-trophy"></i> Top 3 university rank</span>
+                        <span class="project-tag"><i class="fas fa-palette"></i> Figma UI/UX (basic)</span>
+                        <span class="project-tag"><i class="fas fa-database"></i> PostgreSQL performance tuning</span>
+                    </div>
+                    <div style="margin-top: 1.2rem; color: #8fb0e0; font-size: 0.9rem;" id="project-footer">
+                        <i class="fas fa-check-circle" style="color: #3a8cff;"></i> Published paper: "Security in NoSQL Databases" · 
+                        <i class="fas fa-code"></i> OCR Persian · 
+                        <i class="fas fa-users"></i> Team player & startup enthusiast
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-note" id="footer">
+            <i class="fas fa-sync-alt" style="margin-left: 6px;"></i> Updated: August 2026 · 
+            <i class="fas fa-map-pin"></i> Shiraz, Iran · 
+            <i class="fas fa-code"></i> Arman Payan
+        </div>
+
+    </div>
+
+    <script>
+        // ===== داده‌های دو زبانه =====
+        const langData = {
+            en: {
+                button: 'فارسی',
+                name: 'Arman Payan',
+                badge: 'Backend · Odoo · Django · Java',
+                honor1: 'National Elite Foundation',
+                honor2: 'Top 3 University',
+                honor3: 'Security in NoSQL Paper',
+                sideTitle1: 'Personal Info',
+                personal1: '2004 · 22 years',
+                personal2: 'Shiraz, Fars · Iran',
+                personal3: 'Military exemption',
+                personal4: 'Single',
+                personal5: '3+ years experience',
+                personal6: '60–80 million IRR',
+                sideTitle2: 'Languages',
+                lang1: 'English (Professional)',
+                lang2: 'Persian (Native)',
+                sideTitle3: 'Core Skills',
+                sideTitle4: 'Achievements',
+                achieve1: 'National Elite Foundation',
+                achieve2: 'Paper: "Security in NoSQL"',
+                achieve3: 'Top 3 · Computer Engineering',
+                aboutTitle: 'About Me',
+                aboutText: 'Computer Engineering student at <strong style="color: #7abfff;">Persian Gulf University</strong> (ongoing). ICDL certified, high typing speed, with hands-on experience in backend development, virtual networks, and system administration. Passionate about building scalable APIs, ERP systems (Odoo), and secure database architectures. Member of the <strong style="color: #ffd966;">National Elite Foundation</strong> and author of a paper on NoSQL security. Experienced in collaborative environments, start-ups, and academic research.',
+                workTitle: 'Work Experience',
+                job1Title: 'Odoo Developer / Full-Stack',
+                job1Company: 'Roshaye Amin',
+                job1Date: 'Oct 2024 – Present',
+                job1Desc: 'Developing custom Odoo modules, integrating REST APIs, optimizing PostgreSQL performance, and implementing business workflows.',
+                job2Title: 'Mobile Developer',
+                job2Company: 'Vink',
+                job2Date: 'Oct 2025 – Mar 2026',
+                job2Desc: 'Mobile app development (Android/Kotlin) and front-end integration, team collaboration on product features.',
+                job3Title: 'Backend Developer',
+                job3Company: 'Mobile & Tech Development',
+                job3Date: 'Oct 2023 – Present',
+                job3Desc: 'Design and implementation of backend services using Django, Django REST Framework, JWT authentication, and database management (PostgreSQL, MySQL).',
+                job4Title: 'Team Member',
+                job4Company: 'Teamv',
+                job4Date: 'Feb 2022 – Jul 2023',
+                job4Desc: 'Collaborated on a team project; left due to team inactivity.',
+                eduTitle: 'Education',
+                edu1Major: 'B.Sc. Computer Engineering',
+                edu1Uni: 'Persian Gulf University',
+                edu1Year: '2023 – Present',
+                edu2Major: 'High School Diploma (Mathematics)',
+                edu2Uni: 'Khorsandiya',
+                edu2Year: '2020 – 2023',
+                projectTitle: 'Projects & Publications',
+                projectFooter: 'Published paper: "Security in NoSQL Databases" · OCR Persian · Team player & startup enthusiast',
+                footer: 'Updated: August 2026 · Shiraz, Iran · Arman Payan',
+                dir: 'ltr',
+                lang: 'en'
+            },
+            fa: {
+                button: 'English',
+                name: 'آرمان پایان',
+                badge: 'بک‌اند · اودو · جنگو · جاوا',
+                honor1: 'بنیاد ملی نخبگان',
+                honor2: 'رتبه ۳ دانشگاه',
+                honor3: 'مقاله امنیت در NoSQL',
+                sideTitle1: 'اطلاعات شخصی',
+                personal1: '۱۳۸۳ · ۲۲ سال',
+                personal2: 'شیراز، فارس · ایران',
+                personal3: 'معافیت تحصیلی',
+                personal4: 'مجرد',
+                personal5: '۳+ سال سابقه',
+                personal6: '۶۰–۸۰ میلیون تومان',
+                sideTitle2: 'زبان‌ها',
+                lang1: 'انگلیسی (حرفه‌ای)',
+                lang2: 'فارسی (زبان مادری)',
+                sideTitle3: 'مهارت‌های کلیدی',
+                sideTitle4: 'افتخارات',
+                achieve1: 'بنیاد ملی نخبگان',
+                achieve2: 'مقاله: "امنیت در NoSQL"',
+                achieve3: 'رتبه ۳ · مهندسی کامپیوتر',
+                aboutTitle: 'درباره من',
+                aboutText: 'دانشجوی مهندسی کامپیوتر در <strong style="color: #7abfff;">دانشگاه خلیج فارس</strong> (در حال تحصیل). دارای مدرک ICDL، سرعت تایپ بالا، با تجربه عملی در توسعه بک‌اند، شبکه‌های مجازی و مدیریت سیستم. علاقه‌مند به ساخت APIهای مقیاس‌پذیر، سیستم‌های ERP (اودو) و معماری‌های امن پایگاه داده. عضو <strong style="color: #ffd966;">بنیاد ملی نخبگان</strong> و نویسنده مقاله‌ای درباره امنیت پایگاه‌های NoSQL. دارای تجربه همکاری در محیط‌های تیمی، استارتاپ‌ها و پژوهش‌های دانشگاهی.',
+                workTitle: 'سوابق شغلی',
+                job1Title: 'توسعه‌دهنده اودو / فول‌استک',
+                job1Company: 'روشا ایمن',
+                job1Date: 'مهر ۱۴۰۳ – اکنون',
+                job1Desc: 'توسعه ماژول‌های سفارشی اودو، یکپارچه‌سازی REST API، بهینه‌سازی پرفورمنس پستگرس و پیاده‌سازی گردش‌های کاری.',
+                job2Title: 'توسعه‌دهنده موبایل',
+                job2Company: 'Vink',
+                job2Date: 'مهر ۱۴۰۴ – اسفند ۱۴۰۴',
+                job2Desc: 'توسعه اپلیکیشن موبایل (اندروید/کاتلین) و یکپارچه‌سازی فرانت‌اند، همکاری تیمی در ویژگی‌های محصول.',
+                job3Title: 'توسعه‌دهنده بک‌اند',
+                job3Company: 'توسعه موبایل و فناوری',
+                job3Date: 'مهر ۱۴۰۲ – اکنون',
+                job3Desc: 'طراحی و پیاده‌سازی سرویس‌های بک‌اند با جنگو، Django REST Framework، احراز هویت JWT و مدیریت پایگاه داده (پستگرس، MySQL).',
+                job4Title: 'عضو تیم',
+                job4Company: 'Teamv',
+                job4Date: 'بهمن ۱۴۰۱ – تیر ۱۴۰۲',
+                job4Desc: 'همکاری در پروژه تیمی؛ به دلیل عدم فعالیت اعضا جدا شدم.',
+                eduTitle: 'تحصیلات',
+                edu1Major: 'کارشناسی مهندسی کامپیوتر',
+                edu1Uni: 'دانشگاه خلیج فارس',
+                edu1Year: '۱۴۰۲ – اکنون',
+                edu2Major: 'دیپلم ریاضی',
+                edu2Uni: 'خورسندیا',
+                edu2Year: '۱۳۹۹ – ۱۴۰۲',
+                projectTitle: 'پروژه‌ها و دستاوردها',
+                projectFooter: 'مقاله منتشر شده: "امنیت در پایگاه‌های NoSQL" · OCR فارسی · کار تیمی و علاقه‌مند به استارتاپ',
+                footer: 'بروزرسانی: مرداد ۱۴۰۵ · شیراز، ایران · آرمان پایان',
+                dir: 'rtl',
+                lang: 'fa'
+            }
+        };
+
+        // ===== تابع تغییر زبان =====
+        let currentLang = 'en'; // دیفالت: انگلیسی
+
+        function switchLanguage(lang) {
+            const data = langData[lang];
+            if (!data) return;
+
+            // تغییر جهت و زبان صفحه
+            document.documentElement.dir = data.dir;
+            document.documentElement.lang = data.lang;
+
+            // دکمه
+            document.getElementById('langToggle').innerHTML = `<i class="fas fa-globe"></i> ${data.button}`;
+
+            // هدر
+            document.getElementById('name').textContent = data.name;
+            document.getElementById('badge').innerHTML = `<i class="fas fa-code" style="margin-left: 6px;"></i> ${data.badge}`;
+            document.getElementById('honor1').innerHTML = `<i class="fas fa-star" style="margin-left: 6px;"></i> ${data.honor1}`;
+            document.getElementById('honor2').innerHTML = `<i class="fas fa-trophy"></i> ${data.honor2}`;
+            document.getElementById('honor3').innerHTML = `<i class="fas fa-file-alt"></i> ${data.honor3}`;
+
+            // نوار کناری
+            document.getElementById('side-title1').innerHTML = `<i class="fas fa-user-circle"></i> ${data.sideTitle1}`;
+            document.getElementById('personal1').innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.personal1}`;
+            document.getElementById('personal2').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.personal2}`;
+            document.getElementById('personal3').innerHTML = `<i class="fas fa-user-graduate"></i> ${data.personal3}`;
+            document.getElementById('personal4').innerHTML = `<i class="fas fa-heart"></i> ${data.personal4}`;
+            document.getElementById('personal5').innerHTML = `<i class="fas fa-briefcase"></i> ${data.personal5}`;
+            document.getElementById('personal6').innerHTML = `<i class="fas fa-dollar-sign"></i> ${data.personal6}`;
+
+            document.getElementById('side-title2').innerHTML = `<i class="fas fa-globe"></i> ${data.sideTitle2}`;
+            document.getElementById('lang1').innerHTML = `<i class="fas fa-check-circle" style="color: #4a8eff;"></i> ${data.lang1}`;
+            document.getElementById('lang2').textContent = data.lang2;
+
+            document.getElementById('side-title3').innerHTML = `<i class="fas fa-cogs"></i> ${data.sideTitle3}`;
+            document.getElementById('side-title4').innerHTML = `<i class="fas fa-award"></i> ${data.sideTitle4}`;
+
+            document.getElementById('achieve1').innerHTML = `<i class="fas fa-medal"></i> ${data.achieve1}`;
+            document.getElementById('achieve2').innerHTML = `<i class="fas fa-newspaper"></i> ${data.achieve2}`;
+            document.getElementById('achieve3').innerHTML = `<i class="fas fa-university"></i> ${data.achieve3}`;
+
+            // بخش اصلی
+            document.getElementById('about-title').innerHTML = `<i class="fas fa-address-card"></i> ${data.aboutTitle}`;
+            document.getElementById('about-text').innerHTML = data.aboutText;
+
+            document.getElementById('work-title').innerHTML = `<i class="fas fa-briefcase"></i> ${data.workTitle}`;
+            document.getElementById('job1-title').innerHTML = `${data.job1Title} <span class="company">${data.job1Company}</span> <span class="date">${data.job1Date}</span>`;
+            document.getElementById('job1-desc').textContent = data.job1Desc;
+            document.getElementById('job2-title').innerHTML = `${data.job2Title} <span class="company">${data.job2Company}</span> <span class="date">${data.job2Date}</span>`;
+            document.getElementById('job2-desc').textContent = data.job2Desc;
+            document.getElementById('job3-title').innerHTML = `${data.job3Title} <span class="company">${data.job3Company}</span> <span class="date">${data.job3Date}</span>`;
+            document.getElementById('job3-desc').textContent = data.job3Desc;
+            document.getElementById('job4-title').innerHTML = `${data.job4Title} <span class="company">${data.job4Company}</span> <span class="date">${data.job4Date}</span>`;
+            document.getElementById('job4-desc').textContent = data.job4Desc;
+
+            document.getElementById('edu-title').innerHTML = `<i class="fas fa-graduation-cap"></i> ${data.eduTitle}`;
+            document.getElementById('edu1-major').textContent = data.edu1Major;
+            document.getElementById('edu1-uni').textContent = data.edu1Uni;
+            document.getElementById('edu1-year').textContent = data.edu1Year;
+            document.getElementById('edu2-major').textContent = data.edu2Major;
+            document.getElementById('edu2-uni').textContent = data.edu2Uni;
+            document.getElementById('edu2-year').textContent = data.edu2Year;
+
+            document.getElementById('project-title').innerHTML = `<i class="fas fa-flask"></i> ${data.projectTitle}`;
+            document.getElementById('project-footer').innerHTML = `<i class="fas fa-check-circle" style="color: #3a8cff;"></i> ${data.projectFooter}`;
+
+            document.getElementById('footer').innerHTML = `<i class="fas fa-sync-alt" style="margin-left: 6px;"></i> ${data.footer}`;
+
+            currentLang = lang;
+        }
+
+        // ===== رویداد کلیک دکمه =====
+        document.getElementById('langToggle').addEventListener('click', function() {
+            const newLang = currentLang === 'en' ? 'fa' : 'en';
+            switchLanguage(newLang);
+        });
+
+        // ===== پیش‌فرض: انگلیسی =====
+        switchLanguage('en');
+    </script>
+
+</body>
+</html>
